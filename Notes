@@ -1,0 +1,59 @@
+kubectl config use-context docker-desktop
+
+
+https://docs.docker.com/desktop/use-desktop/kubernetes/#cluster-provisioning-method
+
+
+https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+
+
+ to insatll dashboard ui - choclaty palcag emanager and then helm 
+ 
+ 
+ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+ 
+ 
+ 
+ choco install kubernetes-helm
+ 
+ helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+ 
+ helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+ 
+ kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+ 
+ https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
+ 
+ 
+ kubectl -n kubernetes-dashboard create token admin-user
+ 
+kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath="{.data.token}" `
+| %{ [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+
+
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjRpdVRieG9KbmlpcG8tdmZzdlE3Z2szTTVRck1KZS16SEphVDctckp3VFUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIyYmI3Y2JkOS00ZjExLTRiZDAtOTRiNC01ZTEwZWMyZDJmNjYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.IwQPt8pcqt8tBauI1GKL6q6YwzhiixehAyIPQVFiJrFVLMba4X_BoAT6yLiuWbWCyagAa172jkY6gJQ2FbJMOTyQ_87rcDesEZiDgLivlCfvmj21VaG0eMBLZEKtG7YXnp3f6uLZcw7jyCjl37PD3TE3Oqb2s3MsqewHtwbps3AYIPc_sRWbS_MGSSJv1WacxnbOqByzSNvWnHG1PlsvsJ5wFu-Lo_GZXC0sLBwPhNhvxjJ7eedzgjD0WhW4iCJ_s-Rl8rNt3sL2kxylGHTotgsIN0Mi8kcZrvjZEsbEJ8yQYwrB9z6xT7U1CQtFYYNcRgNbypu8KCgkc-AEnM0MeA
+
+ 
+ Stragler fig pattern 
+ 
+ 
+ docker build . -t dayasahu6077/employee:v2
+ 
+ >docker run -d -p 8080:8080 dayasahu6077/employee:v1
+ 
+ 
+ spring.config.import=configserver:http://localhost:8071;spring.profiles.active=dev;spring.application.name=employee
+ 
+ 
+ docker build . -t dayasahu6077/department:v2
+ docker push dayasahu6077/department:v2
+ 
+ docker compose up -d
+ 
+ ##########
+ -Dspring.profiles.active=dev
+ spring.config.import=configserver:http://localhost:8071;spring.profiles.active=dev;spring.application.name=employee
+ 
+ #############
+ 
+ 

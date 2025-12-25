@@ -1,0 +1,28 @@
+services:
+  employee:
+    image: "dayasahu6077/employee:v1"
+    container_name: employee-ms
+    ports:
+      - "9002:8080"
+    deploy:
+      resources:
+        limits:
+          memory:  700m
+    networks:
+      - dsnetwork    
+      
+  department:
+    image: "dayasahu6077/department:v2"
+    container_name: department-ms
+    ports:
+      - "9001:8080"
+    deploy:
+      resources:
+        limits:
+          memory:  700m
+    networks:
+      - dsnetwork  
+      
+networks:
+  dsnetwork:
+    driver: "bridge"
