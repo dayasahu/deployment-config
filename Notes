@@ -120,6 +120,8 @@ kubectl get deployments
 
 kubectl apply -f configserver.yml
 
+kubectl apply -k services/employee/overlays/dev
+
 cluster ip node port 
 
 
