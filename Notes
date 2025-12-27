@@ -1,3 +1,9 @@
+enable kubernets engine , read offical doc and deploy dashboard ui .
+we install using helm 
+frst install help go to helm , bew or linux and chocleete for windows 
+verify helm version
+ 
+
 kubectl config use-context docker-desktop
 
 
@@ -37,7 +43,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IjRpdVRieG9KbmlpcG8tdmZzdlE3Z2szTTVRck1KZS16SEphVDct
  Stragler fig pattern 
  
  
- docker build . -t dayasahu6077/employee:v2
+ docker build . -t dayasahu6077/employee:v25dec
  
  >docker run -d -p 8080:8080 dayasahu6077/employee:v1
  
@@ -53,7 +59,70 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IjRpdVRieG9KbmlpcG8tdmZzdlE3Z2szTTVRck1KZS16SEphVDct
  ##########
  -Dspring.profiles.active=dev
  spring.config.import=configserver:http://localhost:8071;spring.profiles.active=dev;spring.application.name=employee
+
+ -Dspring.profiles.active=dev
+ spring.config.import=configserver:http://localhost:8071;spring.profiles.active=dev;spring.application.name=department
+ 
+ spring.config.import=configserver:http://localhost:8071;spring.profiles.active=dev;spring.application.name=employee
  
  #############
+ docker build . -t dayasahu6077/configserver:v25dec
+ docker build . -t dayasahu6077/department:v25dec
+ docker build . -t dayasahu6077/employee:v25dec
  
+ docker run -d -p 8072:8072 dayasahu6077/employee:v25dec
+ docker run -d -p 8072:8080 dayasahu6077/configserver:v25dec
+ 
+ docker run -d -p 8072:8071 dayasahu6077/configserver:v25dec
+ 
+ docker run -d -p 8071:8071 -v D:\1_GITHUB\microservices-training\config\props:/config-repo:ro -e SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS="file:/config-repo/employee/,file:/config-repo/department/" --name configserver_local my/configserver:latest
+
+ docker run -p 8071:8071 \
+  -v D:/1_GITHUB/microservices-training/config/props:/config \
+  configserver
+  
+  docker run -d -p 8071:8071 -v D:/1_GITHUB/microservices-training/config/props:/config dayasahu6077/configserver:v26dec configserver
+  
+  run with a name to integrate it with the networking 
+  
+  docker run -d --name configserver -p 8071:8071 -v D:/1_GITHUB/microservices-training/config/props:/config dayasahu6077/configserver:v26dec
+
+ docker run -d --name employee --link configserver -p 8081:8080 -e SPRING_CONFIG_IMPORT=configserver:http://configserver:8071 -e SPRING_PROFILES_ACTIVE=dev -e SPRING_APPLICATION_NAME=employee dayasahu6077/employee:v26dec2am
+
+////
+
+version: "3.9"
+
+services:
+  configserver:
+    image: dayasahu6077/configserver:v26dec
+    ports:
+      - "8071:8080"
+    volumes:
+      - D:/1_GITHUB/microservices-training/config/props:/config
+
+  employee:
+    image: dayasahu6077/employee:v26dec
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8080
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_APPLICATION_NAME: employee
+    depends_on:
+      - configserver
+///
+
+
+kubectl get services
+kubectl get replicaset
+kubectl get deployments
+
+kubectl apply -f configserver.yml
+
+cluster ip node port 
+
+
+
+
  
