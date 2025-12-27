@@ -150,14 +150,79 @@ kubectl port-forward -n tekton-pipelines svc/tekton-dashboard 9097:9097
 kubectl create secret docker-registry dockerhub-secret --docker-username=dayasahu6077 --docker-password=test# --docker-email=dayashankarsahuch@gmail.com
 
 create in teckton name space 
+
+kubectl apply -n tekton-pipelines -f tekton/task-git-clone.yaml.yaml
 kubectl apply -n tekton-pipelines -f tekton/task-maven-build.yaml
 kubectl apply -n tekton-pipelines -f tekton/task-docker-build-push.yaml
 kubectl apply -n tekton-pipelines -f tekton/pipeline-employee-ci.yaml
+
 kubectl apply -n tekton-pipelines -f tekton/pipelinerun-employee-ci.yaml
 
 
 kubectl get pipelines -n tekton-pipelines
 
+kubectl create secret docker-registry dockerhub-secret --docker-username=dayasahu6077 --docker-password=xyz# --docker-email=dayashankarsahuch@gmail.com -n tekton-pipelines
 
+** verify **
+ kubectl get task,pipeline,pipelinerun,secret -n tekton-pipelines
+ 
+maven-build         10m
+PS D:\1_GITHUB\microservices-training\employee> kubectl get task,pipeline,pipelinerun,secret -n tekton-pipelines
+NAME                                AGE
+task.tekton.dev/docker-build-push   11m
+task.tekton.dev/maven-build         11m
+
+NAME                              AGE
+pipeline.tekton.dev/employee-ci   11m
+
+NAME                                     SUCCEEDED   REASON               STARTTIME   COMPLETIONTIME
+pipelinerun.tekton.dev/employee-ci-run   False       CouldntGetPipeline   11m         11m
+
+NAME                      TYPE                             DATA   AGE
+secret/dockerhub-secret   kubernetes.io/dockerconfigjson   1      7m12s
+secret/webhook-certs      Opaque                           3      89m
+***8
+
+employee-ci-run-maven
+PodAdmissionFailed
+
+kubectl label namespace tekton-pipelines pod-security.kubernetes.io/enforce=privileged pod-security.kubernetes.io/audit=privileged pod-security.kubernetes.io/warn=privileged --overwrite
+
+
+
+kubectl delete pipelinerun -n tekton-pipelines employee-ci-run-maven
+kubectl apply -f tekton/pipelinerun-employee-ci.yaml
+
+kubectl delete pipelinerun employee-ci-run -n tekton-pipelines
+kubectl delete pipeline employee-ci -n tekton-pipelines
+kubectl delete task maven-build -n tekton-pipelines
+kubectl delete task docker-build-push -n tekton-pipelines
+kubectl delete task git-clone -n tekton-pipelines
+
+kubectl apply -n tekton-pipelines -f tekton/task-git-clone.yaml
+kubectl apply -n tekton-pipelines -f tekton/task-maven-build.yaml
+kubectl apply -n tekton-pipelines -f tekton/task-docker-build-push.yaml
+kubectl apply -n tekton-pipelines -f tekton/pipeline-employee-ci.yaml
+
+
+kubectl create -n tekton-pipelines -f tekton/pipelinerun-employee-ci.yaml
+
+if github private
+
+kubectl create secret generic github-token \
+  --from-literal=token=ghp_xxxxxxxxx \
+  -n tekton-pipelines
+error checking push permissions -- make sure you entered the correct tag name, and that you are authenticated correctly, and try again: checking push permission for "dayasahu6077/employee:20250106-1": POST https://index.docker.io/v2/dayasahu6077/employee/blobs/uploads/: UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:dayasahu6077/employee Type:repository] map[Action:push Class: Name:dayasahu6077/employee Type:repository]]
+
+kubectl apply -n tekton-pipelines -f tekton/tekton-build-sa.yaml
+kubectl describe taskrun employee-ci-run-t68r7-clone -n tekton-pipelines
+
+kubectl delete pipelinerun -n tekton-pipelines --all
+kubectl create -f tekton/pipelinerun-employee-ci.yaml
+
+  the step "clone" in TaskRun "employee-ci-run-kkbtl-clone" failed to pull the image "". The pod errored with the message: "Back-off pulling image "ghcr.io/tektoncd/git-init:v0.52.0": ErrImagePull: Error response from daemon: error from registry: denied
+  
+
+kubectl create secret docker-registry ghcr-pull-secret --docker-server=ghcr.io --docker-username=dayasahu6077 --docker-password=Welcome12# --docker-email=you@example.com  -n tekton-pipelines
 
 *****8 
