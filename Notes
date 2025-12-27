@@ -118,9 +118,10 @@ kubectl get services
 kubectl get replicaset
 kubectl get deployments
 
+create config map - 
+kubectl apply -k services/employee/overlays/dev
 kubectl apply -f configserver.yml
 
-kubectl apply -k services/employee/overlays/dev
 
 cluster ip node port 
 
@@ -133,4 +134,30 @@ D:\1_GITHUB\microservices-training\deployment-config\kubernetes>kubectl apply -f
 deployment.apps/configserver created
 service/configserver configured
 
- 
+**tekton***
+
+kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/release.yaml
+
+kubectl apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/release.yaml
+
+kubectl create secret docker-registry dockerhub-secret \
+  --docker-username=YOUR_USERNAME \
+  --docker-password=YOUR_TOKEN \
+  --docker-email=you@example.com
+
+kubectl port-forward -n tekton-pipelines svc/tekton-dashboard 9097:9097
+
+kubectl create secret docker-registry dockerhub-secret --docker-username=dayasahu6077 --docker-password=test# --docker-email=dayashankarsahuch@gmail.com
+
+create in teckton name space 
+kubectl apply -n tekton-pipelines -f tekton/task-maven-build.yaml
+kubectl apply -n tekton-pipelines -f tekton/task-docker-build-push.yaml
+kubectl apply -n tekton-pipelines -f tekton/pipeline-employee-ci.yaml
+kubectl apply -n tekton-pipelines -f tekton/pipelinerun-employee-ci.yaml
+
+
+kubectl get pipelines -n tekton-pipelines
+
+
+
+*****8 
