@@ -124,7 +124,13 @@ kubectl apply -k services/employee/overlays/dev
 
 cluster ip node port 
 
+kubectl get pods
+kubectl get deployments
+kubectl delete deployment configserver
+kubectl rollout restart deployment configserver
 
-
+D:\1_GITHUB\microservices-training\deployment-config\kubernetes>kubectl apply -f configserver/
+deployment.apps/configserver created
+service/configserver configured
 
  
