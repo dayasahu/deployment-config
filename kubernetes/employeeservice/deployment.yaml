@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: employee
-          image: dayasahu6077/employee:v26dec2am
+          image: dayasahu6077/employee:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

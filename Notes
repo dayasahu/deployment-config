@@ -140,9 +140,7 @@ kubectl apply -f https://storage.googleapis.com/tekton-releases/pipeline/latest/
 
 kubectl apply -f https://storage.googleapis.com/tekton-releases/dashboard/latest/release.yaml
 
-kubectl create secret docker-registry dockerhub-secret \
-  --docker-username=YOUR_USERNAME \
-  --docker-password=YOUR_TOKEN \
+kubectl create secret docker-registry dockerhub-secret --docker-username=YOUR_USERNAME   --docker-password=YOUR_TOKEN \
   --docker-email=you@example.com
 
 kubectl port-forward -n tekton-pipelines svc/tekton-dashboard 9097:9097
@@ -223,6 +221,23 @@ kubectl create -f tekton/pipelinerun-employee-ci.yaml
   the step "clone" in TaskRun "employee-ci-run-kkbtl-clone" failed to pull the image "". The pod errored with the message: "Back-off pulling image "ghcr.io/tektoncd/git-init:v0.52.0": ErrImagePull: Error response from daemon: error from registry: denied
   
 
-kubectl create secret docker-registry ghcr-pull-secret --docker-server=ghcr.io --docker-username=dayasahu6077 --docker-password=Welcome12# --docker-email=you@example.com  -n tekton-pipelines
+kubectl create secret docker-registry ghcr-pull-secret --docker-server=ghcr.io --docker-username=dayasahu6077 --docker-password=test# --docker-email=you@example.com  -n tekton-pipelines
 
-*****8 
+
+kubectl apply -n tekton-pipelines -f tekton/tekton-sa-build.yaml
+
+
+kubectl apply -n tekton-pipelines -f tekton/tekton-ci-sa.yaml
+
+kubectl create secret docker-registry dockerhub-secret --docker-username=dayasahu6077 --docker-password=test --docker-email=dayashankarsahuch@gmail.com -n tekton-pipelines
+
+kubectl get secret dockerhub-secret -n tekton-pipelines -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d
+
+
+kubectl create secret docker-registry dockerhub-secret   --docker-server=https://index.docker.io/v1/ --docker-username=dayasahu6077 --docker-password=pattoken --docker-email=dayashankarsahuch@gmail.com -n tekton-pipelines
+
+kubectl get secret dockerhub-secret -n tekton-pipelines -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d
+******
+Auto trigger build
+kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
+ 
