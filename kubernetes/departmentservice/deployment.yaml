@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: department
+  labels:
+    app: department
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: department
+  template:
+    metadata:
+      labels:
+        app: department
+    spec:
+      containers:
+        - name: department
+          image: ghcr.io/REPLACE_OWNER/department:sha-0000000
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_CONFIG_IMPORT
+              value: "configserver:http://configserver:8071"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "dev"
+            - name: SPRING_APPLICATION_NAME
+              value: "department"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+

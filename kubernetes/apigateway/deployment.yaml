@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+            periodSeconds: 10
+            initialDelaySeconds: 10
+              port: 8888
+              path: /actuator/health/readiness
+            httpGet:
+          readinessProbe:
+            periodSeconds: 20
+            initialDelaySeconds: 30
+              port: 8888
+              path: /actuator/health/liveness
+            httpGet:
+          livenessProbe:
+              value: "ms-api-gateway"
+            - name: SPRING_APPLICATION_NAME
+              value: "dev"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "configserver:http://configserver:8071"
+            - name: SPRING_CONFIG_IMPORT
+          env:
+            - containerPort: 8888
+          ports:
+          imagePullPolicy: Always
+          image: ghcr.io/REPLACE_OWNER/gateway-server:sha-0000000
+        - name: api-gateway
+      containers:
+    spec:
+        app: api-gateway
+      labels:
+    metadata:
+  template:
+      app: api-gateway
+    matchLabels:
+  selector:
+  replicas: 1
+spec:
+    app: api-gateway
+  labels:
+  name: api-gateway
+metadata:
+kind: Deployment
+
