@@ -240,4 +240,28 @@ kubectl get secret dockerhub-secret -n tekton-pipelines -o jsonpath='{.data.\.do
 ******
 Auto trigger build
 kubectl apply -f https://storage.googleapis.com/tekton-releases/triggers/latest/release.yaml
- 
+kubectl apply -n tekton-pipelines -f tekton/triggerbinding-github.yaml
+kubectl apply -n tekton-pipelines -f tekton/triggertemplate-employee.yaml
+kubectl apply -n tekton-pipelines -f tekton/eventlistener-github.yaml
+
+kubectl port-forward svc/el-github-listener 8080:8080 -n tekton-pipelines
+
+kubectl expose svc el-github-listener --type=NodePort --name=github-webhook -n tekton-pipelines
+
+http://192.168.1.6:8080
+
+http://58.84.61.239:8080
+
+****
+kubectl create -f tekton/pipelinerun-employee-ci.yaml
+kubectl apply -f .\deployment.yam
+kubectl apply -f .\service.yaml
+kubectl rollout restart deployment employee
+
+
+**** Tekton deploy step added
+
+kubectl apply -f tekton/tekton-deploy-sa.yaml
+kubectl apply -f tekton/tekton-deploy-rbac.yaml
+kubectl apply -f tekton/tekton-ci-deploy-rbac.yaml
+
