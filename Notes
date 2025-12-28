@@ -254,7 +254,7 @@ http://58.84.61.239:8080
 
 ****
 kubectl create -f tekton/pipelinerun-employee-ci.yaml
-kubectl apply -f .\deployment.yam
+kubectl apply -f .\deployment.yaml
 kubectl apply -f .\service.yaml
 kubectl rollout restart deployment employee
 
@@ -264,4 +264,30 @@ kubectl rollout restart deployment employee
 kubectl apply -f tekton/tekton-deploy-sa.yaml
 kubectl apply -f tekton/tekton-deploy-rbac.yaml
 kubectl apply -f tekton/tekton-ci-deploy-rbac.yaml
+kubectl auth can-i update deployments --as=system:serviceaccount:tekton-pipelines:tekton-ci-sa  -n default
+kubectl auth can-i update deployment/employee --as=system:serviceaccount:tekton-pipelines:tekton-ci-sa -n default
+kubectl auth can-i patch deployment/employee --as=system:serviceaccount:tekton-pipelines:tekton-ci-sa -n default
+
+kubectl apply -n tekton-pipelines -f tekton/pipeline-employee-ci.yaml
+
+kubectl apply -n tekton-pipelines -f tekton/task-kubectl-deploy.yaml
+kubectl delete pipelinerun -n tekton-pipelines --all
+
+***** Install and setup Promethese and grafana **
+add dependancy in pom and add property in pom 
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/kube-prometheus-stack -n monitoring --create-namespace
+
+kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring
+
+http://localhost:3000/login
+
+username: admin
+password: prom-operator
+
+login to find from secret - 
+
+admin/RukccMlU86q5kUMqd0HUgbETuUoBJeHvpS1u57e9
 
