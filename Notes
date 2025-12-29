@@ -287,3 +287,22 @@ kubectl get secret prometheus-grafana -n monitoring -o jsonpath="{.data.admin-pa
 # Once logged in, you can add the Prometheus data source (it's usually pre-configured)
 # and import dashboards. Search for Spring Boot / Micrometer dashboards by ID (e.g., 4701, 12900).
 
+
+#################
+Ingress
+Client → Ingress (80)
+        → api-gateway Service (80)
+        → api-gateway Pod (8888)
+        → employee Service (80)
+        → employee Pod (8080)
+
+
+Ingress is "what"
+Controller is "how"
+NGINX is "how implemented"
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/cloud/deploy.yaml
+
+kubectl get pods -n ingress-nginx
+
+kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
