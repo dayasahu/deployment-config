@@ -57,10 +57,10 @@ spec:
           configMap:
             name: configserver-files
             items:
-              - key: employee.properties
-                path: props/employee/employee.properties
-              - key: employee-dev.properties
-                path: props/employee/employee-dev.properties
+              - key: apigateway.properties
+                path: props/employee/apigateway.properties
+              - key: apigateway-dev.properties
+                path: props/employee/apigateway-dev.properties
               - key: employee-prod.properties
                 path: props/employee/employee-prod.properties
               - key: department.properties

@@ -291,3 +291,13 @@ login to find from secret -
 
 admin/RukccMlU86q5kUMqd0HUgbETuUoBJeHvpS1u57e9
 
+docker build . -t dayasahu6077/gateway-server:28Dec2
+docker push dayasahu6077/gateway-server:28Dec2
+
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl port-forward svc/api-gateway 8888:80
+
+
+kubectl get svc api-gateway -o wide; kubectl describe svc api-gateway; kubectl get events --sort-by=.lastTimestamp | findstr /i "api-gateway\|loadbalancer\|service" | Select-Object -Last 30
+http://localhost:8081/employee/envmsg
