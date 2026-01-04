@@ -317,4 +317,6 @@ C:\Windows\System32\drivers\etc
 spring.config.import=configserver:http://localhost:8072;spring.profiles.active=dev;spring.application.name=department
 docker build . -t dayasahu6077/department:5jan
 docker push dayasahu6077/department:5jan
-kubectl apply -k services/employee/overlays/dev
+kubectl apply -k apigateway/overlays/dev
+
+spring.config.import=configserver:http://localhost:8072;spring.profiles.active=dev;spring.application.name=employee
