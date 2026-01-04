@@ -40,6 +40,7 @@ kubectl -n kubernetes-dashboard create token admin-user
 
 # Now, navigate to https://localhost:8443 and use the generated token to log in.
 
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjRpdVRieG9KbmlpcG8tdmZzdlE3Z2szTTVRck1KZS16SEphVDctckp3VFUifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIyYmI3Y2JkOS00ZjExLTRiZDAtOTRiNC01ZTEwZWMyZDJmNjYiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.IwQPt8pcqt8tBauI1GKL6q6YwzhiixehAyIPQVFiJrFVLMba4X_BoAT6yLiuWbWCyagAa172jkY6gJQ2FbJMOTyQ_87rcDesEZiDgLivlCfvmj21VaG0eMBLZEKtG7YXnp3f6uLZcw7jyCjl37PD3TE3Oqb2s3MsqewHtwbps3AYIPc_sRWbS_MGSSJv1WacxnbOqByzSNvWnHG1PlsvsJ5wFu-Lo_GZXC0sLBwPhNhvxjJ7eedzgjD0WhW4iCJ_s-Rl8rNt3sL2kxylGHTotgsIN0Mi8kcZrvjZEsbEJ8yQYwrB9z6xT7U1CQtFYYNcRgNbypu8KCgkc-AEnM0MeA
 
 # ===================================================================
 # Local Development with Docker & Docker Compose
@@ -51,8 +52,10 @@ docker build . -t dayasahu6077/employee:v25dec
 docker build . -t dayasahu6077/department:v25dec
 docker build . -t dayasahu6077/configserver:v25dec
 
+docker build . -t dayasahu6077/department:latest
+
 # --- Pushing Images to Docker Hub ---
-docker push dayasahu6077/department:v2
+docker push dayasahu6077/department:latest
 
 # --- Running Containers Manually ---
 
@@ -300,9 +303,18 @@ Client → Ingress (80)
 Ingress is "what"
 Controller is "how"
 NGINX is "how implemented"
-
+C:\Windows\System32\drivers\etc
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/cloud/deploy.yaml
 
 kubectl get pods -n ingress-nginx
 
 kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
+
+C:\Windows\System32\drivers\etc
+
+127.0.0.1 api.mybank.com
+
+spring.config.import=configserver:http://localhost:8072;spring.profiles.active=dev;spring.application.name=department
+docker build . -t dayasahu6077/department:5jan
+docker push dayasahu6077/department:5jan
+kubectl apply -k services/employee/overlays/dev
