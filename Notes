@@ -320,3 +320,7 @@ docker push dayasahu6077/department:5jan
 kubectl apply -k apigateway/overlays/dev
 
 spring.config.import=configserver:http://localhost:8072;spring.profiles.active=dev;spring.application.name=employee
+
+kubectl port-forward -n tekton-pipelines svc/tekton-dashboard 9097:9097
+
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
