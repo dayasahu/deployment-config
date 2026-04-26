@@ -287,6 +287,15 @@ kubectl port-forward svc/prometheus-grafana 3000:80 -n monitoring
 # To get the default password, run:
 kubectl get secret prometheus-grafana -n monitoring -o jsonpath="{.data.admin-password}" | base64 --decode
 
+http://localhost:3000/login
+
+username: admin
+password: prom-operator
+
+login to find from secret - 
+
+admin/RukccMlU86q5kUMqd0HUgbETuUoBJeHvpS1u57e9
+
 # Once logged in, you can add the Prometheus data source (it's usually pre-configured)
 # and import dashboards. Search for Spring Boot / Micrometer dashboards by ID (e.g., 4701, 12900).
 
