@@ -399,3 +399,13 @@ kubectl rollout restart deployment/configserver -n microservices
 kubectl rollout restart deployment/employee -n microservices
 kubectl rollout restart deployment/department -n microservices
 kubectl rollout restart deployment/apigateway -n microservices
+
+
+You are an exper architect , designing a course to learn moder microservices architecture and desing patterns . 
+This project solves most of the microservices cross cutting concerns . Deaign a very detailed document wiht diagrams and content which is easy to understand . The document should be details but must include atleast
+- Setup required  to run this microservices project . 
+- tech stack 
+- design choices ratinals 
+- trade off 
+- all microservices cross cutting concern and how this microservices project show casing its solution . 
+- as diagrams color and interacive as much as possible , you canalos genrat html pages 
