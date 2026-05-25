@@ -333,6 +333,69 @@ http://localhost:8071/apigateway/dev
 
 docker build . -t dayasahu6077/gateway-server:26April
 docker push dayasahu6077/gateway-server:26April
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f service.yaml
+
+****
+docker build . -t dayasahu6077/department:6may
+docker push dayasahu6077/department:6may
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+kubectl apply -f service.yaml
 
 
 ****
+JWT :myDefaultSecretKey1234567890abcdefghij
+
+Services ──OTLP gRPC :4317──► OTel Collector ──┬─► Loki   :3100  (logs)
+   /actuator/prometheus ◄── Prometheus  ──┘    ├─► Tempo  :3200  (traces)
+                                               └─► Prometheus :9090 (metrics)
+                                                            │
+                                                            ▼
+                                                         Grafana :3000
+														 
+														 
+
+docker network create observability
+
+*****
+
+curl http://localhost:13133              # OTel collector — expect "{}"
+curl http://localhost:3100/ready          # Loki — expect "ready"
+curl http://localhost:3200/ready          # Tempo — expect "ready"
+curl http://localhost:9090/-/healthy      # Prometheus — expect "Prometheus Server is Healthy"
+curl http://localhost:3000/api/health     # Grafana — expect {"database":"ok",...}
+
+
+
+docker compose -f employee/docker-compose.yml build
+docker compose -f employee/docker-compose.yml up -d
+
+
+Saved at the repo root as STACK.md. It's more comprehensive than the chat summary — it has:
+
+The high-level topology diagram (both networks shown)
+Per-service wiring table for all 5 services (image, ports, config source, dependencies, talks-to)
+The three configuration tiers (bootstrap → configserver → env vars) with precedence rules
+Network and port maps
+"Files that matter" reference tree
+Copy-paste bring-up and tear-down sequences
+
+
+***********
+
+Install make 
+
+choco install make
+
+
+C:\Windows\System32\drivers\etc\hosts
+
+
+
+kubectl apply -k .
+kubectl rollout restart deployment/configserver -n microservices
+kubectl rollout restart deployment/employee -n microservices
+kubectl rollout restart deployment/department -n microservices
+kubectl rollout restart deployment/apigateway -n microservices
